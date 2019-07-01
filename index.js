@@ -1,6 +1,11 @@
+// Call express
 const express = require('express')
 
+// Instace of express
 const server = express()
+
+// Seting up express to read requisition body like JSON
+server.use(express.json())
 
 // Query params = ?teste=1
 // Route params = /users/1
@@ -8,17 +13,29 @@ const server = express()
 
 // CRUD: {Create, Read, Update, Delete}
 
+// Array/Vector of users
 const users = ['Diego', 'Robson', 'Victor']
 
+// Listing all users
 server.get('/users', (req, res) => {
   return res.json(users)
 })
 
+// Return one users by index
 server.get('/users/:index', (req, res) => {
   // const id = req.params.id
   const { index } = req.params // Destructuring
 
   return res.json([users[index]])
+})
+
+// Adding an user
+server.post('/users', (req, res) => {
+  const { name } = req.body
+
+  users.push(name)
+
+  return res.json(users)
 })
 
 server.listen(3000)
