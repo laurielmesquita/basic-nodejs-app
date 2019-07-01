@@ -16,12 +16,12 @@ server.use(express.json())
 // Array/Vector of users
 const users = ['Diego', 'Robson', 'Victor']
 
-// Listing all users
+// LISTING ALL USERS
 server.get('/users', (req, res) => {
   return res.json(users)
 })
 
-// Return one users by index
+// RETURN A USER BY INDEX
 server.get('/users/:index', (req, res) => {
   // const id = req.params.id
   const { index } = req.params // Destructuring
@@ -29,7 +29,7 @@ server.get('/users/:index', (req, res) => {
   return res.json([users[index]])
 })
 
-// Adding an user
+// ADDING AN USER
 server.post('/users', (req, res) => {
   const { name } = req.body
 
@@ -38,7 +38,7 @@ server.post('/users', (req, res) => {
   return res.json(users)
 })
 
-// Updating an user
+// UPDATING AN USER
 // '/users/:index' pega o usuário que será editado pelo seu index no arrey
 server.put('/users/:index', (req, res) => {
   const { index } = req.params // Destructuring
@@ -52,6 +52,17 @@ server.put('/users/:index', (req, res) => {
 
   // Retorna todos os usuários
   return res.json(users)
+})
+
+// DELETING A USER
+server.delete('/users/:index', (req, res) => {
+  const { index } = req.params // Destructuring
+
+  // Busca a posição do index indicado e apaga um a partir dali
+  users.splice(index, 1)
+
+  // Retorna todos os usuários
+  return res.send()
 })
 
 server.listen(3000)
