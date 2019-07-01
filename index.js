@@ -38,4 +38,20 @@ server.post('/users', (req, res) => {
   return res.json(users)
 })
 
+// Updating an user
+// '/users/:index' pega o usuário que será editado pelo seu index no arrey
+server.put('/users/:index', (req, res) => {
+  const { index } = req.params // Destructuring
+
+  // Pagamos o nome que recebemos de dentro da requisição no body
+  const { name } = req.body
+
+  // Repõe a informação do nome existente com o novo nome que vem de dentro
+  // do corpo da requisição acima
+  users[index] = name
+
+  // Retorna todos os usuários
+  return res.json(users)
+})
+
 server.listen(3000)
