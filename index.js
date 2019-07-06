@@ -66,7 +66,11 @@ server.get('/users/:index', chekUserInArray, (req, res) => {
 })
 
 // ADDING AN USER
+<<<<<<< HEAD
 server.post('/users', checkUserExists, (req, res) => {
+=======
+server.post('/users', chekUserInArray, checkUserExists, (req, res) => {
+>>>>>>> 8657a23... Added midleware configs
   const { name } = req.body
 
   users.push(name)
