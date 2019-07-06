@@ -11,10 +11,46 @@ server.use(express.json())
 // Route params = /users/1
 // Request body = { "name": "Lauriel", "email": "laurielmesquita@me.com" }
 
-// CRUD: {Create, Read, Update, Delete}
-
+// CRUD: Create/Read/Update/Delete
 // Array/Vector of users
 const users = ['Diego', 'Robson', 'Victor']
+
+server.use((req, res, next) => {
+  console.time('Request')
+  console.log(`Método: ${req.method}, URL: ${req.url}`)
+
+  next()
+
+  console.timeEnd('Request')
+})
+
+// Local midleware
+// CHECAR SE EXISTE NOME NO CORPO DA REQUISIÇÃO
+function checkUserExists (req, res, next) {
+  // Verifica se a negação é verdadeira
+  // Verifica se no corpo da requisição existe a propriedade name
+  if (!req.body.name) {
+    return res.status(400).json({ error: 'User name is required' })
+  }
+
+  return next()
+}
+
+// Local midleware
+// CHECAR SE EXISTE O INDEX INDICADO DENTRO DO ARRAY
+function chekUserInArray (req, res, next) {
+  const user = users[req.params.index]
+
+  // Verifica se a negação é verdadeira
+  // Verifica se o index existe dentro array
+  if (!user) {
+    return res.status(400).json({ error: 'User does not exists' })
+  }
+
+  req.user = user
+
+  return next()
+}
 
 // LISTING ALL USERS
 server.get('/users', (req, res) => {
@@ -22,15 +58,15 @@ server.get('/users', (req, res) => {
 })
 
 // RETURN A USER BY INDEX
-server.get('/users/:index', (req, res) => {
+server.get('/users/:index', chekUserInArray, (req, res) => {
   // const id = req.params.id
-  const { index } = req.params // Destructuring
+  // const { index } = req.params // Destructuring
 
-  return res.json([users[index]])
+  return res.json(req.user)
 })
 
 // ADDING AN USER
-server.post('/users', (req, res) => {
+server.post('/users', chekUserInArray, checkUserExists, (req, res) => {
   const { name } = req.body
 
   users.push(name)
@@ -40,7 +76,7 @@ server.post('/users', (req, res) => {
 
 // UPDATING AN USER
 // '/users/:index' pega o usuário que será editado pelo seu index no arrey
-server.put('/users/:index', (req, res) => {
+server.put('/users/:index', chekUserInArray, checkUserExists, (req, res) => {
   const { index } = req.params // Destructuring
 
   // Pagamos o nome que recebemos de dentro da requisição no body
@@ -54,8 +90,8 @@ server.put('/users/:index', (req, res) => {
   return res.json(users)
 })
 
-// DELETING A USER
-server.delete('/users/:index', (req, res) => {
+// DELETING AN USER
+server.delete('/users/:index', chekUserInArray, (req, res) => {
   const { index } = req.params // Destructuring
 
   // Busca a posição do index indicado e apaga um a partir dali
