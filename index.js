@@ -66,7 +66,7 @@ server.get('/users/:index', chekUserInArray, (req, res) => {
 })
 
 // ADDING AN USER
-server.post('/users', chekUserInArray, checkUserExists, (req, res) => {
+server.post('/users', checkUserExists, (req, res) => {
   const { name } = req.body
 
   users.push(name)
