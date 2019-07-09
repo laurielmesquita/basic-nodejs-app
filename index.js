@@ -1,10 +1,10 @@
 // Call express
 const express = require('express')
 
-// Instace of express
+// Instantiating of express
 const server = express()
 
-// Seting up express to read requisition body like JSON
+// Setting up express to read requisition body like JSON
 server.use(express.json())
 
 // Query params = ?teste=1
@@ -101,4 +101,4 @@ server.delete('/users/:index', chekUserInArray, (req, res) => {
   return res.send()
 })
 
-server.listen(3000)
+server.listen(3003)
